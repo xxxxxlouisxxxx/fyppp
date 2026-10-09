@@ -1,0 +1,62 @@
+version: 2
+models:
+  - name: silver_response_summaries
+    description: One existing SERP or LLM observation, with null semantic totals unless inspection is complete.
+    columns:
+      - name: observation_id
+        tests: [unique, not_null]
+      - name: evidence_coverage_status
+        tests: [not_null]
+      - name: raw_file_hash
+        tests: [not_null]
+  - name: silver_response_items
+    description: Raw atomic subtree or citation occurrence with stable path ID and optional parent.
+    columns:
+      - name: item_id
+        tests: [unique, not_null]
+      - name: observation_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_response_summaries')
+                field: observation_id
+      - name: parent_item_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_response_items')
+                field: item_id
+      - name: raw_evidence_json
+        tests: [not_null]
+  - name: silver_item_brand_evidence
+    description: Many-to-many reviewed-registry matches with separate answer, product, SERP and citation channels.
+    columns:
+      - name: evidence_id
+        tests: [unique, not_null]
+      - name: item_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_response_items')
+                field: item_id
+      - name: evidence_type
+        tests:
+          - accepted_values:
+              arguments:
+                values: [owned_domain, serp_title_snippet, answer_text, product_card, citation]
+  - name: silver_item_category_evidence
+    description: Multilabel explicit reviewed term or raw-category mapping, with taxonomy and rule versions.
+    columns:
+      - name: evidence_id
+        tests: [unique, not_null]
+      - name: item_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_response_items')
+                field: item_id
+      - name: taxonomy_version
+        tests: [not_null]

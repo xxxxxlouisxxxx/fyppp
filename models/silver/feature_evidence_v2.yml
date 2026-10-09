@@ -1,0 +1,51 @@
+version: 2
+models:
+  - name: silver_evidence_results_v2
+    columns:
+      - name: result_id
+        tests: [unique, not_null]
+      - name: observation_id
+        tests: [not_null]
+  - name: silver_readable_items_v2
+    columns:
+      - name: item_id
+        tests: [unique, not_null]
+      - name: result_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_evidence_results_v2')
+                field: result_id
+  - name: silver_feature_coverage_v2
+    columns:
+      - name: feature_id
+        tests: [unique, not_null]
+      - name: coverage_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['complete', 'partial', 'not_applicable', 'pending', 'provider_error', 'missing', 'unsupported', 'quarantined']
+  - name: silver_citations_v2
+    columns:
+      - name: citation_id
+        tests: [unique, not_null]
+  - name: silver_citation_occurrences_v2
+    columns:
+      - name: occurrence_id
+        tests: [unique, not_null]
+      - name: citation_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_citations_v2')
+                field: citation_id
+  - name: silver_feature_matches_v2
+    columns:
+      - name: evidence_id
+        tests: [unique, not_null]
+      - name: item_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('silver_readable_items_v2')
+                field: item_id

@@ -1,0 +1,334 @@
+version: 2
+
+models:
+  - name: stg_dataforseo__runs
+    description: Staging view for Bronze ingestion run records with UTC-normalized timestamps and a success flag.
+    columns:
+      - name: run_id
+        description: Stable run identifier.
+        tests: [unique, not_null]
+      - name: outcome_status
+        description: Final ingestion run status.
+        tests: [not_null]
+      - name: collection_success
+        description: Whether the run reached a completed or partial-success state.
+        tests: [not_null]
+      - name: started_at_utc
+        description: UTC start timestamp for a collection run.
+        tests: [not_null]
+      - name: completed_at_utc
+        description: UTC completion timestamp when present.
+
+  - name: stg_dataforseo__requests
+    description: Staging view for Bronze request metadata with multi-engine fields retained after basic normalization.
+    columns:
+      - name: request_id
+        description: Stable request identifier.
+        tests: [unique, not_null]
+      - name: run_id
+        description: Parent collection run identifier.
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_dataforseo__runs')
+                field: run_id
+      - name: source_category
+        description: Request category, such as serp or llm.
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['serp', 'llm']
+      - name: provider
+        description: Raw provider string retained from Bronze.
+        tests: [not_null]
+      - name: search_engine
+        description: Search engine name retained for SERP requests.
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_reference__search_targets')
+                field: search_engine
+              config:
+                where: "search_engine is not null"
+      - name: search_type
+        description: Search type retained for multi-engine SERP requests.
+      - name: platform
+        description: Multi-engine platform or engine when applicable.
+      - name: model_name
+        description: Optional model label retained as raw metadata.
+      - name: outcome_status
+        description: Bronze-level request status.
+        tests: [not_null]
+      - name: collection_success
+        description: Boolean success flag decoupled from raw HTTP status handling.
+        tests: [not_null]
+      - name: estimated_cost_usd
+        description: Estimated cost normalized to USD.
+      - name: created_at_utc
+        description: UTC timestamp when the request row was created.
+        tests: [not_null]
+      - name: endpoint_name
+        description: Optional endpoint name retained for engine-specific compatibility.
+      - name: serp_function
+        description: Optional SERP function name retained for compatibility.
+      - name: retrieval_method
+        description: Retrieval method retained for engine compatibility.
+      - name: ingestion_id
+        description: Ingestion identifier retained for lineage compatibility.
+      - name: request_hash
+        description: Request hash retained for deduplication compatibility.
+      - name: deduplication_key
+        description: Deduplication key retained for compatibility.
+      - name: collection_window_id
+        description: Collection window identifier retained from Bronze.
+      - name: query_id
+        description: SERP query identifier or LLM prompt identifier stored on the request. Gold interprets this by source_category.
+      - name: source_api_version
+        description: Optional source API version retained as null until Bronze stores it.
+
+  - name: stg_dataforseo__attempts
+    description: Staging view of Bronze transport attempts with UTC-normalized timestamps.
+    columns:
+      - name: attempt_id
+        description: Stable attempt identifier.
+        tests: [unique, not_null]
+      - name: request_id
+        description: Parent request identifier.
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_dataforseo__requests')
+                field: request_id
+      - name: attempt_number
+        description: Attempt ordinal.
+        tests: [not_null]
+      - name: started_at_utc
+        description: UTC timestamp when the attempt started.
+        tests: [not_null]
+      - name: ended_at_utc
+        description: UTC timestamp when the attempt ended.
+      - name: transport_status
+        description: Raw transport status retained without HTTP-only interpretation.
+        tests: [not_null]
+
+  - name: stg_dataforseo__responses
+    description: Staging view of Bronze response records with validity and cost normalized to USD.
+    columns:
+      - name: response_id
+        description: Stable response identifier.
+        tests: [unique, not_null]
+      - name: request_id
+        description: Parent request identifier.
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dataforseo__requests')
+                field: request_id
+      - name: provider_request_id
+        description: Provider request identifier retained from Bronze response metadata.
+      - name: task_id
+        description: Optional provider task identifier retained from Bronze.
+      - name: response_valid
+        description: Bronze-level validity indicator saved separately from HTTP status.
+        tests: [not_null]
+      - name: has_results
+        description: Result-presence indicator retained for compatibility; not inferred during staging.
+      - name: outcome_status
+        description: Response outcome status normalized from the validity signal.
+      - name: actual_cost_usd
+        description: Actual cost normalized to USD.
+      - name: received_at_utc
+        description: UTC timestamp when the response was received.
+        tests: [not_null]
+      - name: response_json
+        description: Raw provider JSON retained for lineage and debugging, not parsed in staging.
+      - name: source_api_version
+        description: Provider API version retained for compatibility.
+      - name: adapter_version
+        description: Adapter version retained for compatibility.
+
+  - name: stg_dataforseo__raw_files
+    description: Staging view of immutable raw artifact references retained from Bronze.
+    columns:
+      - name: raw_file_id
+        description: Stable raw artifact identifier.
+        tests: [unique, not_null]
+      - name: request_id
+        description: Parent request identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_dataforseo__requests')
+                field: request_id
+      - name: artifact_type
+        description: Kind of raw artifact captured.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['request', 'response', 'metadata']
+      - name: raw_hash
+        description: SHA256 checksum of the raw artifact.
+        tests: [not_null]
+      - name: created_at_utc
+        description: UTC timestamp when the artifact record was stored.
+        tests: [not_null]
+
+  - name: stg_reference__queries
+    description: Staging view for canonical query registry entries.
+    columns:
+      - name: query_id
+        description: Query identifier.
+        tests: [unique, not_null]
+      - name: keyword
+        description: Query text.
+        tests: [not_null]
+      - name: active
+        description: Whether the query is enabled.
+        tests: [not_null]
+      - name: recorded_at_utc
+        description: UTC timestamp of the query registration.
+        tests: [not_null]
+
+  - name: stg_reference__search_targets
+    description: Staging view for the verified capability registry governing supported engine matrix values.
+    columns:
+      - name: search_target_id
+        description: Search target identifier.
+        tests: [unique, not_null]
+      - name: provider
+        description: Provider for the target.
+        tests: [not_null]
+      - name: search_engine
+        description: Search engine used by the target.
+        tests: [not_null]
+      - name: search_type
+        description: Search type for the target.
+        tests: [not_null]
+      - name: model_name
+        description: Optional model name retained from the capability registry.
+      - name: active
+        description: Whether the target is active.
+        tests: [not_null]
+      - name: recorded_at_utc
+        description: UTC timestamp of registry update.
+        tests: [not_null]
+      - name: endpoint_name
+        description: Optional endpoint name for engine-specific compatibility.
+      - name: retrieval_method
+        description: Retrieval method retained from the capability registry.
+
+  - name: stg_reference__brands
+    description: Staging view for canonical brand data.
+    columns:
+      - name: brand_id
+        description: Canonical brand identifier.
+        tests: [unique, not_null]
+      - name: canonical_name
+        description: Canonical brand name.
+        tests: [not_null]
+      - name: active
+        description: Whether the brand is active.
+        tests: [not_null]
+      - name: recorded_at_utc
+        description: UTC timestamp of brand registry update.
+        tests: [not_null]
+
+  - name: stg_reference__brand_aliases
+    description: Staging view for approved brand alias entries.
+    columns:
+      - name: brand_alias_id
+        description: Stable alias identifier.
+        tests: [unique, not_null]
+      - name: brand_id
+        description: Parent brand identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_reference__brands')
+                field: brand_id
+
+  - name: stg_reference__brand_domains
+    description: Staging view for approved brand domains.
+    columns:
+      - name: brand_domain_id
+        description: Stable domain identifier.
+        tests: [unique, not_null]
+      - name: brand_id
+        description: Parent brand identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_reference__brands')
+                field: brand_id
+
+  - name: stg_reference__comparisons
+    description: Staging view for approved query-to-prompt comparison mappings.
+    columns:
+      - name: comparison_id
+        description: Stable comparison identifier.
+        tests: [unique, not_null]
+      - name: query_id
+        description: Parent canonical query identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_reference__queries')
+                field: query_id
+      - name: prompt_id
+        description: Parent LLM prompt identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_reference__llm_prompts')
+                field: prompt_id
+      - name: active
+        description: Whether the comparison record is active.
+        tests: [not_null]
+      - name: recorded_at_utc
+        description: UTC timestamp of comparison registration.
+        tests: [not_null]
+
+  - name: stg_reference__llm_prompts
+    description: Staging view for approved LLM prompt registry entries.
+    columns:
+      - name: prompt_id
+        description: Stable prompt identifier.
+        tests: [unique, not_null]
+      - name: prompt_group
+        description: Optional reviewed prompt grouping. Null means the source CSV supplied no group; never infer intent from numeric suffixes.
+      - name: active
+        description: Whether the prompt is active.
+        tests: [not_null]
+      - name: recorded_at_utc
+        description: UTC timestamp of prompt registration.
+        tests: [not_null]
+
+  - name: stg_reference__llm_targets
+    description: Staging view for approved LLM target registry entries.
+    columns:
+      - name: llm_target_id
+        description: Stable LLM target identifier.
+        tests: [unique, not_null]
+      - name: provider
+        description: Provider label for the LLM target.
+        tests: [not_null]
+      - name: platform
+        description: Platform or engine for the target.
+        tests: [not_null]
+      - name: model
+        description: Model name used for the target.
+        tests: [not_null]
+      - name: active
+        description: Whether the target is active.
+        tests: [not_null]
+      - name: recorded_at_utc
+        description: UTC timestamp of target registration.
+        tests: [not_null]

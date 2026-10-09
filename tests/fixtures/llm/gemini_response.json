@@ -1,0 +1,53 @@
+{
+  "retrieval": {
+    "cost": 0,
+    "status_code": 20000,
+    "status_message": "Ok.",
+    "tasks": [
+      {
+        "cost": 0,
+        "data": {
+          "api": "ai_optimization",
+          "device": "desktop",
+          "function": "llm_scraper",
+          "keyword": "Which resale platforms are safest for buying sneakers?",
+          "language_code": "en",
+          "location_code": 2156,
+          "os": "windows",
+          "se": "gemini"
+        },
+        "id": "09280424-2476-0626-0000-2721c3e60279",
+        "result": [
+          {
+            "items": [
+              {"type": "gemini_text", "rank_group": 1, "rank_absolute": 1, "original_text": "When buying resale sneakers, safety comes down to authentication guarantees.", "markdown": "When buying resale sneakers, safety comes down to authentication guarantees.", "sources": null},
+              {"type": "gemini_text", "rank_group": 2, "rank_absolute": 2, "original_text": "The safest and most reliable resale platforms for sneakers include:", "markdown": "The safest and most reliable resale platforms for sneakers include:", "sources": null},
+              {"type": "gemini_text", "rank_group": 3, "rank_absolute": 3, "original_text": "1. GOAT & Flight Club", "markdown": "### 1. GOAT & Flight Club", "sources": null},
+              {"type": "gemini_text", "rank_group": 4, "rank_absolute": 4, "original_text": "How it works: Sellers ship their sneakers to GOAT first.", "markdown": "* **How it works:** Sellers ship their sneakers to GOAT first.", "sources": [{"domain": "whop.com", "source_name": "Whop", "title": "Best sneaker apps to use in 2026 - Whop", "url": "https://whop.com/blog/best-sneaker-apps/?utm_source=gemini", "snippet": "Here are the top 6 sneaker apps for 2026.", "markdown": "Sellers ship their sneakers to GOAT (or its sister company Flight Club) first.", "type": "gemini_source"}]},
+              {"type": "gemini_text", "rank_group": 5, "rank_absolute": 5, "original_text": "2. StockX", "markdown": "### 2. StockX", "sources": null},
+              {"type": "gemini_text", "rank_group": 6, "rank_absolute": 6, "original_text": "How it works: Operating similarly to a stock market, StockX uses a live bid/ask system.", "markdown": "* **How it works:** Operating similarly to a stock market, StockX uses a live \"bid/ask\" system.", "sources": [{"domain": "selleraider.com", "source_name": "SellerAider", "title": "Best Place to Sell Sneakers: The Top 5 Marketplaces (2026)", "url": "https://selleraider.com/best-place-to-sell-sneakers/?utm_source=gemini", "snippet": " * StockX. StockX is like the stock market for sneakers.", "markdown": "Operating similarly to a stock market, StockX uses a live \"bid/ask\" system.", "type": "gemini_source"}, {"domain": "whop.com", "source_name": "Whop", "title": "Best sneaker apps to use in 2026 - Whop", "url": "https://whop.com/blog/best-sneaker-apps/?utm_source=gemini", "snippet": "StockX features in-depth statistics for each shoe brand and model.", "markdown": "They have heavily invested in streamlined detection technology and rigorous quality control standards to weed out fakes.", "type": "gemini_source"}]},
+              {"type": "gemini_text", "rank_group": 7, "rank_absolute": 7, "original_text": "3. eBay (Authenticity Guarantee)", "markdown": "### 3. eBay (Authenticity Guarantee)", "sources": null},
+              {"type": "gemini_text", "rank_group": 8, "rank_absolute": 8, "original_text": "How it works: eBay is a peer-to-peer marketplace, but their Authenticity Guarantee program makes eligible sneaker purchases exceptionally safe.", "markdown": "* **How it works:** eBay is a peer-to-peer marketplace, but their **Authenticity Guarantee** program makes eligible sneaker purchases exceptionally safe.", "sources": [{"domain": "whop.com", "source_name": "Whop", "title": "Best sneaker apps to use in 2026 - Whop", "url": "https://whop.com/blog/best-sneaker-apps/?utm_source=gemini", "snippet": "Additionally, users can easily list items for sale.", "markdown": "eBay is a peer-to-peer marketplace, but their **Authenticity Guarantee** program makes eligible sneaker purchases exceptionally safe.", "type": "gemini_source"}]},
+              {"type": "gemini_text", "rank_group": 9, "rank_absolute": 9, "original_text": "Tips for Staying Safe on Any Platform:", "markdown": "### Tips for Staying Safe on Any Platform:", "sources": null},
+              {"type": "gemini_text", "rank_group": 10, "rank_absolute": 10, "original_text": "Never buy off-platform: Scammers often try to move conversations to Instagram, WhatsApp, or text to avoid platform fees.", "markdown": "* **Never buy off-platform:** Scammers often try to move conversations to Instagram, WhatsApp, or text to avoid platform fees.", "sources": null},
+              {"type": "gemini_text", "rank_group": 11, "rank_absolute": 11, "original_text": "Are you looking for a specific rare pair, or trying to decide between buying brand new vs. pre-owned?", "markdown": "Are you looking for a specific rare pair, or trying to decide between buying brand new vs. pre-owned?", "sources": null}
+            ],
+            "items_count": 11,
+            "keyword": "Which resale platforms are safest for buying sneakers?",
+            "language_code": "en",
+            "location_code": 2156,
+            "markdown": "When buying resale sneakers, safety comes down to authentication guarantees.\n\nThe safest and most reliable resale platforms for sneakers include:\n\n### 1. GOAT & Flight Club\n\n* **How it works:** Sellers ship their sneakers to GOAT first.\n\n### 2. StockX\n\n### 3. eBay (Authenticity Guarantee)\n\n### Tips for Staying Safe on Any Platform:\n\n* **Never buy off-platform:** Scammers often try to move conversations to Instagram, WhatsApp, or text to avoid platform fees.\n\nAre you looking for a specific rare pair, or trying to decide between buying brand new vs. pre-owned?",
+            "model": "3.5 Flash-Lite",
+            "se_results_count": 0,
+            "sources": [
+              {"domain": "whop.com", "source_name": "Whop", "title": "Best sneaker apps to use in 2026 - Whop", "url": "https://whop.com/blog/best-sneaker-apps/?utm_source=gemini", "snippet": "Here are the top 6 sneaker apps for 2026.", "markdown": "Sellers ship their sneakers to GOAT (or its sister company Flight Club) first.", "type": "gemini_source"},
+              {"domain": "selleraider.com", "source_name": "SellerAider", "title": "Best Place to Sell Sneakers: The Top 5 Marketplaces (2026)", "url": "https://selleraider.com/best-place-to-sell-sneakers/?utm_source=gemini", "snippet": " * StockX. StockX is like the stock market for sneakers.", "markdown": "Operating similarly to a stock market, StockX uses a live \"bid/ask\" system.", "type": "gemini_source"},
+              {"domain": "whop.com", "source_name": "Whop", "title": "Best sneaker apps to use in 2026 - Whop", "url": "https://whop.com/blog/best-sneaker-apps/?utm_source=gemini", "snippet": "StockX features in-depth statistics for each shoe brand and model.", "markdown": "They have heavily invested in streamlined detection technology and rigorous quality control standards to weed out fakes.", "type": "gemini_source"},
+              {"domain": "whop.com", "source_name": "Whop", "title": "Best sneaker apps to use in 2026 - Whop", "url": "https://whop.com/blog/best-sneaker-apps/?utm_source=gemini", "snippet": "Additionally, users can easily list items for sale.", "markdown": "eBay is a peer-to-peer marketplace, but their **Authenticity Guarantee** program makes eligible sneaker purchases exceptionally safe.", "type": "gemini_source"}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

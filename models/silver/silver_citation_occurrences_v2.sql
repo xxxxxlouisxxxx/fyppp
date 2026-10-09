@@ -1,0 +1,1 @@
+select * from {{ source('silver', 'evidence_citation_occurrences_v2') }}

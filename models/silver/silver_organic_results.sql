@@ -1,0 +1,19 @@
+select
+  cast(organic_result_id as varchar) as organic_result_id,
+  {{ nullif_trim('provider') }} as provider,
+  {{ nullif_trim('search_engine') }} as search_engine,
+  {{ nullif_trim('search_type') }} as search_type,
+  cast(observation_id as varchar) as observation_id,
+  cast(parent_serp_item_id as varchar) as parent_serp_item_id,
+  {{ nullif_trim('source_item_type') }} as source_item_type,
+  cast(feature_supported as boolean) as feature_supported,
+  cast(feature_observed as boolean) as feature_observed,
+  {{ nullif_trim('normalization_status') }} as normalization_status,
+  cast(raw_evidence as varchar) as raw_evidence,
+  cast(engine_rank as integer) as engine_rank,
+  cast(normalized_rank as integer) as normalized_rank,
+  {{ nullif_trim('raw_url') }} as raw_url,
+  {{ nullif_trim('canonical_url') }} as canonical_url,
+  {{ nullif_trim('title') }} as title,
+  {{ nullif_trim('description') }} as description
+from {{ source('silver', 'silver_organic_results') }}

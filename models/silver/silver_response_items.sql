@@ -1,0 +1,1 @@
+select * from {{ source('silver', 'silver_response_items') }}

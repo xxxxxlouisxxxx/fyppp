@@ -1,0 +1,66 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "geo-research"
+version = "0.1.0"
+description = "Local-first SERP and generative-engine research platform."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { file = "LICENSE" }
+authors = [{ name = "GEO Research Contributors" }]
+dependencies = [
+    "duckdb>=1.2,<2",
+    "pandas>=2.2,<3",
+    "plotly>=6,<7",
+    "streamlit>=1.50,<2",
+    "httpx>=0.28,<1",
+    "pydantic-settings>=2.7,<3",
+    "pydantic>=2.10,<3",
+    "PyYAML>=6.0,<7",
+    "tenacity>=9,<10",
+]
+
+[project.scripts]
+geo-research = "geo_research.cli:main"
+
+[dependency-groups]
+dev = [
+    "dbt-duckdb>=1.9,<2",
+    "mypy>=1.14,<2",
+    "pre-commit>=4.0,<5",
+    "pytest-cov>=6.0,<7",
+    "pytest>=8.3,<10",
+    "respx>=0.22,<1",
+    "ruff>=0.9,<1",
+]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --cov=geo_research --cov-report=term-missing"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["geo_research"]
+
+[tool.coverage.report]
+fail_under = 0
+show_missing = true
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src"]
+warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = ["yaml"]
+ignore_missing_imports = true

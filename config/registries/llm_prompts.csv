@@ -1,0 +1,69 @@
+prompt_id,prompt_text,language,market,active
+prompt-001,What are the best comfortable sneakers for walking?,en,US,TRUE
+prompt-002,Which sneakers are most comfortable for all-day wear?,en,US,TRUE
+prompt-003,Which sneakers are best for travel?,en,US,TRUE
+prompt-004,What are the best sneakers for wide feet?,en,US,TRUE
+prompt-005,What are the best lifestyle sneakers with a wide toe box?,en,US,TRUE
+prompt-006,Find the best legitimate sneaker deals below retail.,en,US,TRUE
+prompt-007,What are the best comfortable and stylish sneakers for cost-effectiveness?,en,US,TRUE
+prompt-008,Which sneaker brands and models are most frequently counterfeited?,en,US,TRUE
+prompt-009,Which resale platforms are safest for buying sneakers?,en,US,TRUE
+prompt-010,What are the best comfortable and stylish sneakers for summer? ,en,US,TRUE
+prompt-011,Which sneakers can be dressed up for smart-casual occasions?,en,US,TRUE
+prompt-012,Which low-profile sneakers offer the best comfort? ,en,US,TRUE
+prompt-013,Which sneaker brands make durable shoes that can last for years?,en,US,TRUE
+prompt-014,Which sneaker soles are most likely to crumble during storage?,en,US,TRUE
+prompt-015,Which sneaker brands and models make shoes that can be resoled or repaired?,en,US,TRUE
+prompt-016,Which sneaker brands or models have experienced the largest resale-price declines over the past 12 months?,en,US,TRUE
+prompt-017,Which sneaker brands have experienced the biggest decline in hype over the past 12 months?,en,US,TRUE
+prompt-018,請推薦最舒適的步行運動鞋，並比較緩震、貼合度、耐用性與透氣性。,zh-TW,HK,TRUE
+prompt-019,有哪些運動鞋最適合全天穿著？請按舒適度排序並說明原因。,zh-TW,HK,TRUE
+prompt-020,請推薦最適合旅行穿著的運動鞋，重點考慮重量與耐走程度。,zh-TW,HK,TRUE
+prompt-021,寬腳人士適合哪些運動鞋？請列出楦頭較寬的選擇。,zh-TW,HK,TRUE
+prompt-022,請推薦寬楦頭休閒運動鞋，並比較價格、外型和日常搭配性。,zh-TW,HK,TRUE
+prompt-023,請找出低於原價的正品球鞋優惠，並標示可靠購買渠道。,zh-TW,HK,TRUE
+prompt-024,請推薦性價比最高的舒適時尚運動鞋。,zh-TW,HK,TRUE
+prompt-025,哪些球鞋品牌和型號最常被仿冒？請提供辨識重點。,zh-TW,HK,TRUE
+prompt-026,哪一些二手球鞋交易平台最安全？請比較風險控制機制。,zh-TW,HK,TRUE
+prompt-027,請推薦夏天穿著舒適又好看的運動鞋，並解釋透氣設計差異。,zh-TW,HK,TRUE
+prompt-028,有哪些運動鞋可以搭配 smart-casual 穿搭？請附建議場合。,zh-TW,HK,TRUE
+prompt-029,請推薦外型低調但腳感舒適的運動鞋，並比較中底技術。,zh-TW,HK,TRUE
+prompt-030,哪些球鞋品牌較耐穿、可穿多年？請比較常見材質與壽命。,zh-TW,HK,TRUE
+prompt-031,哪些球鞋在長期存放後最容易鞋底粉化？請說明原因與預防方式。,zh-TW,HK,TRUE
+prompt-032,哪些球鞋品牌或型號可以重貼鞋底或維修？請提供可修復性評估。,zh-TW,HK,TRUE
+prompt-033,過去 12 個月哪些球鞋品牌或型號轉售價格跌幅最大？請列出主因。,zh-TW,HK,TRUE
+prompt-034,過去 12 個月哪些球鞋品牌熱度下滑最明顯？請提供趨勢解讀。,zh-TW,HK,TRUE
+prompt-035,请推荐最舒服的步行运动鞋，并比较缓震、包裹、耐用与透气表现。,zh-CN,CN,TRUE
+prompt-036,哪些运动鞋最适合全天穿着？请按舒适度排序并解释原因。,zh-CN,CN,TRUE
+prompt-037,请推荐最适合旅行的运动鞋，重点考虑重量、稳定性与耐走性。,zh-CN,CN,TRUE
+prompt-038,宽脚人群适合哪些运动鞋？请列出楦头较宽的型号。,zh-CN,CN,TRUE
+prompt-039,请推荐宽楦头休闲运动鞋，并比较价格、外观与日常搭配性。,zh-CN,CN,TRUE
+prompt-040,请找出低于原价的正品球鞋优惠，并标注可靠购买渠道。,zh-CN,CN,TRUE
+prompt-041,请推荐兼顾舒适、时尚与高性价比的运动鞋,zh-CN,CN,TRUE
+prompt-042,哪些球鞋品牌和型号最常被仿冒？请给出识别真伪要点。,zh-CN,CN,TRUE
+prompt-043,哪些二手球鞋交易平台更安全？请比较平台的风控与保障机制。,zh-CN,CN,TRUE
+prompt-044,请推荐夏天舒适又好看的运动鞋，并比较不同鞋面的透气特性。,zh-CN,CN,TRUE
+prompt-045,有哪些运动鞋可搭配 smart-casual 穿搭？请提供通勤与聚会建议。,zh-CN,CN,TRUE
+prompt-046,请推荐外观低调但脚感舒适的运动鞋，并比较中底技术差异。,zh-CN,CN,TRUE
+prompt-047,哪些球鞋品牌更耐穿、可以穿很多年？请比较常见材质寿命。,zh-CN,CN,TRUE
+prompt-048,哪些球鞋在长期存放后更容易出现鞋底粉化？请说明原因和预防方法。,zh-CN,CN,TRUE
+prompt-049,哪些球鞋品牌或型号可以重贴鞋底或维修？请评估可修复性。,zh-CN,CN,TRUE
+prompt-050,过去 12 个月哪些球鞋品牌或型号转售价跌幅最大？请列出原因。,zh-CN,CN,TRUE
+prompt-051,过去 12 个月哪些球鞋品牌热度下降最明显？请解读背后趋势。,zh-CN,CN,TRUE
+prompt-052,Apa saja sepatu kets paling nyaman untuk berjalan kaki?,id,ID,TRUE
+prompt-053,Sepatu kets mana yang paling nyaman dipakai seharian?,id,ID,TRUE
+prompt-054,Sepatu kets apa yang paling cocok untuk bepergian?,id,ID,TRUE
+prompt-055,Apa saja sepatu kets terbaik untuk pemilik kaki lebar?,id,ID,TRUE
+prompt-056,Apa saja sepatu kets gaya hidup terbaik dengan ruang jari kaki (toe box) yang lebar?,id,ID,TRUE
+prompt-057,Temukan penawaran sepatu kets asli terbaik dengan harga di bawah harga ritel.,id,ID,TRUE
+prompt-058,Apa saja sepatu kets nyaman dan bergaya yang memberikan nilai terbaik (hemat biaya)?,id,ID,TRUE
+prompt-059,Merek dan model sepatu kets mana yang paling sering dipalsukan?,id,ID,TRUE
+prompt-060,Platform jual-beli (resale) mana yang paling aman untuk membeli sepatu kets?,id,ID,TRUE
+prompt-061,Apa saja sepatu kets nyaman dan bergaya untuk musim panas?,id,ID,TRUE
+prompt-062,Sepatu kets mana yang cocok dipadukan untuk acara bergaya *smart-casual*?,id,ID,TRUE
+prompt-063,Sepatu kets berprofil rendah (*low-profile*) mana yang menawarkan kenyamanan terbaik?,id,ID,TRUE
+prompt-064,Merek sepatu kets mana yang memproduksi sepatu awet yang bisa bertahan bertahun-tahun?,id,ID,TRUE
+prompt-065,Sol sepatu kets jenis apa yang paling rentan hancur atau rapuh saat disimpan?,id,ID,TRUE
+prompt-066,Merek dan model sepatu kets mana yang memproduksi sepatu yang solnya bisa diganti atau diperbaiki?,id,ID,TRUE
+prompt-067,Merek atau model sepatu kets mana yang mengalami penurunan harga jual kembali terbesar dalam 12 bulan terakhir?,id,ID,TRUE
+prompt-068,Merek sepatu kets mana yang mengalami penurunan popularitas (*hype*) terbesar dalam 12 bulan terakhir?,id,ID,TRUE

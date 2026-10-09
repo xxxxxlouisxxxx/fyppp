@@ -1,0 +1,3 @@
+# Non-secret settings only. Environment variables override these values.
+log_level: INFO
+duckdb_path: data/warehouse/geo_research.duckdb

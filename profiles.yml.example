@@ -1,0 +1,8 @@
+geo_research:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "{{ env_var('DUCKDB_PATH', 'data/warehouse/geo_research.duckdb') }}"
+      schema: analytics
+      threads: 1

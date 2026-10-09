@@ -1,0 +1,26 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Register verified Raw evidence",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$env:PYTHONPATH = 'src'; & 'C:\\Python314\\python.exe' -m geo_research.cli storage register-raw --database data/warehouse/phase_d_presentation.duckdb --raw-directory data/raw"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "V1 fixture regression",
+			"type": "shell",
+			"command": "$env:PYTHONPATH='src'; $env:PYTHONDONTWRITEBYTECODE='1'; & 'f:/FYP (2)/FYP (2)/.venv/Scripts/python.exe' -m pytest tests/unit/test_releases.py tests/unit/test_reviews.py -o addopts='' -p no:cacheprovider",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		}
+	]
+}

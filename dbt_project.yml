@@ -1,0 +1,28 @@
+name: geo_research
+version: "1.0.0"
+config-version: 2
+profile: geo_research
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests/dbt"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  geo_research:
+    staging:
+      +materialized: view
+      +tags: ["staging"]
+    silver:
+      +materialized: view
+      +tags: ["silver"]
+    gold:
+      +materialized: view
+      +tags: ["gold"]
+    presentation:
+      +materialized: view
+      +tags: ["presentation"]
+
+on-run-start:
+  - "{{ bootstrap_sanitized_bronze_fixture() }}"

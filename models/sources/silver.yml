@@ -1,0 +1,63 @@
+version: 2
+
+sources:
+  - name: silver
+    description: Python-written Silver parse tables. dbt only wraps these tables; it does not parse JSON or call APIs.
+    schema: silver
+    tables:
+      - name: evidence_results_v2
+      - name: evidence_items_v2
+      - name: evidence_features_v2
+      - name: evidence_citations_v2
+      - name: evidence_citation_occurrences_v2
+      - name: evidence_matches_v2
+      - name: silver_response_summaries
+        description: Per-existing-observation composition and conservative evidence coverage.
+      - name: silver_response_items
+        description: Top-level blocks and nested products, images, related strings and citation occurrences.
+      - name: silver_item_brand_evidence
+        description: Reviewed registry matches, separated by evidence channel.
+      - name: silver_item_category_evidence
+        description: Explicit reviewed versioned taxonomy rules, never raw format classification.
+      - name: silver_search_observations
+        description: One parsed SERP observation per response, including no-result outcomes.
+        columns:
+          - name: observation_id
+            description: Deterministic observation identifier.
+            tests: [unique, not_null]
+          - name: response_id
+            description: Source Bronze response identifier.
+            tests: [not_null]
+          - name: raw_file_hash
+            description: SHA-256 of the immutable raw response file.
+            tests: [not_null]
+      - name: silver_serp_items
+        description: Top-level SERP items retained from engine-specific parsers.
+        columns:
+          - name: serp_item_id
+            description: Deterministic SERP item identifier.
+            tests: [unique, not_null]
+          - name: observation_id
+            description: Parent observation identifier.
+            tests: [not_null]
+      - name: silver_serp_parsing_quarantine
+        description: Unsafe or unknown SERP elements retained without dropping evidence.
+        columns:
+          - name: quarantine_id
+            description: Deterministic quarantine identifier.
+            tests: [unique, not_null]
+      - name: silver_organic_results
+        description: Fixture-proven organic feature rows derived from parsed SERP items.
+        columns:
+          - name: organic_result_id
+            description: Deterministic organic result identifier.
+            tests: [unique, not_null]
+      - name: silver_llm_observations
+        description: Flattened LLM observations without guessed item schemas.
+        columns:
+          - name: observation_id
+            description: Deterministic LLM observation identifier.
+            tests: [unique, not_null]
+          - name: raw_file_hash
+            description: SHA-256 of the immutable raw LLM response file.
+            tests: [not_null]

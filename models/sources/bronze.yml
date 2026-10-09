@@ -1,0 +1,333 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: Immutable Bronze metadata layer that stores collection lifecycle rows and raw evidence references.
+    schema: bronze
+    freshness:
+      warn_after: {count: 7, period: day}
+      error_after: {count: 30, period: day}
+    tables:
+      - name: ingestion_runs
+        description: One row per collection run, including completion status and timestamps.
+        loaded_at_field: started_at
+        columns:
+          - name: run_id
+            description: Stable collection run identifier.
+            tests: [unique, not_null]
+          - name: status
+            description: Run lifecycle status at Bronze metadata level.
+            tests: [not_null]
+          - name: started_at
+            description: UTC timestamp when the run started.
+            tests: [not_null]
+          - name: completed_at
+            description: UTC timestamp when the run completed.
+
+      - name: query_registry
+        description: Canonical registry of SERP queries and research prompts approved for collection.
+        loaded_at_field: recorded_at
+        columns:
+          - name: query_id
+            description: Stable query identifier.
+            tests: [unique, not_null]
+          - name: keyword
+            description: Query text.
+            tests: [not_null]
+          - name: active
+            description: Whether the query is enabled for collection.
+            tests: [not_null]
+          - name: recorded_at
+            description: UTC timestamp of registry record creation or update.
+            tests: [not_null]
+
+      - name: search_target_registry
+        description: Verified search and platform capability registry for supported engines.
+        loaded_at_field: recorded_at
+        columns:
+          - name: search_target_id
+            description: Stable search target identifier.
+            tests: [unique, not_null]
+          - name: provider
+            description: Source API provider.
+            tests: [not_null]
+          - name: search_engine
+            description: Engine name for SERP tasks.
+            tests: [not_null]
+          - name: search_type
+            description: SERP result class, such as organic.
+            tests: [not_null]
+          - name: model_name
+            description: Optional model or capability label, null when not applicable.
+          - name: active
+            description: Active capability flag.
+            tests: [not_null]
+          - name: recorded_at
+            description: UTC timestamp of registry update.
+            tests: [not_null]
+
+      - name: api_requests
+        description: One row per API request, preserving request metadata without interpreting business outcomes.
+        loaded_at_field: created_at
+        columns:
+          - name: request_id
+            description: Stable request identifier.
+            tests: [unique, not_null]
+          - name: run_id
+            description: Parent ingestion run identifier.
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('bronze', 'ingestion_runs')
+                    field: run_id
+          - name: source_category
+            description: "Collection category: serp or llm."
+            tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['serp', 'llm']
+          - name: provider
+            description: API provider such as DataForSEO.
+            tests: [not_null]
+          - name: platform
+            description: Engine or platform name for multi-engine data, such as gemini or google.
+          - name: search_engine
+            description: Engine name for SERP tasks when applicable.
+          - name: model_name
+            description: Optional model name for the request.
+          - name: request_status
+            description: Bronze request lifecycle status.
+            tests: [not_null]
+          - name: estimated_cost
+            description: Estimated cost in USD for the request.
+          - name: created_at
+            description: UTC timestamp when the request record was created.
+            tests: [not_null]
+          - name: query_id
+            description: Optional query registry identifier retained on the request row.
+          - name: search_target_id
+            description: Optional search target identifier retained on the request row.
+          - name: collection_window
+            description: Collection window identifier used for request identity.
+          - name: request_hash
+            description: Deterministic request hash retained from Bronze metadata.
+          - name: deduplication_key
+            description: Deduplication key retained from Bronze metadata.
+
+      - name: api_attempts
+        description: API transport attempts for a request, without any business interpretation.
+        loaded_at_field: started_at
+        columns:
+          - name: attempt_id
+            description: Stable attempt identifier.
+            tests: [unique, not_null]
+          - name: request_id
+            description: Request that owns the attempt.
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('bronze', 'api_requests')
+                    field: request_id
+          - name: attempt_number
+            description: Zero-based or one-based attempt sequence number.
+            tests: [not_null]
+          - name: started_at
+            description: UTC timestamp when the transport attempt started.
+            tests: [not_null]
+          - name: ended_at
+            description: UTC timestamp when the transport attempt ended.
+          - name: transport_status
+            description: Raw transport outcome.
+            tests: [not_null]
+
+      - name: api_responses
+        description: Raw API response metadata and response validity indicators.
+        loaded_at_field: received_at
+        columns:
+          - name: response_id
+            description: Stable response identifier.
+            tests: [unique, not_null]
+          - name: request_id
+            description: Parent request identifier.
+            tests:
+              - unique
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('bronze', 'api_requests')
+                    field: request_id
+          - name: provider_request_id
+            description: Provider-assigned request identifier retained as raw evidence. 
+          - name: response_valid
+            description: Validity marker set from Bronze-level validation, not HTTP status alone.
+            tests: [not_null]
+          - name: actual_cost
+            description: Actual cost in USD observed by the provider.
+          - name: received_at
+            description: UTC timestamp when the response was received.
+            tests: [not_null]
+          - name: task_id
+            description: Optional provider task identifier retained from Bronze.
+
+      - name: raw_files
+        description: Immutable raw artifact references stored outside the Git repository.
+        loaded_at_field: created_at
+        columns:
+          - name: raw_file_id
+            description: Stable raw artifact identifier.
+            tests: [unique, not_null]
+          - name: request_id
+            description: Parent request identifier.
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('bronze', 'api_requests')
+                    field: request_id
+          - name: artifact_type
+            description: Kind of raw artifact captured.
+            tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['request', 'response', 'metadata']
+          - name: raw_directory
+            description: Relative directory path for the raw artifact.
+            tests: [not_null]
+          - name: relative_path
+            description: Relative path to the raw file inside the raw directory.
+            tests: [not_null]
+          - name: sha256
+            description: SHA256 checksum of the raw artifact.
+            tests: [not_null]
+          - name: byte_size
+            description: Raw file byte size.
+            tests: [not_null]
+          - name: content_type
+            description: MIME type of the artifact when known.
+            tests: [not_null]
+          - name: created_at
+            description: UTC timestamp when the artifact record was stored.
+            tests: [not_null]
+
+      - name: llm_prompt_registry
+        description: Approved LLM prompt definitions retained as Bronze metadata.
+        loaded_at_field: recorded_at
+        columns:
+          - name: prompt_id
+            description: Stable prompt identifier.
+            tests: [unique, not_null]
+          - name: prompt_group
+            description: Prompt grouping used for prompt selection.
+            tests: [not_null]
+          - name: active
+            description: Whether the prompt is active.
+            tests: [not_null]
+          - name: recorded_at
+            description: UTC timestamp of registry update.
+            tests: [not_null]
+
+      - name: llm_target_registry
+        description: Approved LLM targets including provider, platform, and model metadata.
+        loaded_at_field: recorded_at
+        columns:
+          - name: llm_target_id
+            description: Stable LLM target identifier.
+            tests: [unique, not_null]
+          - name: provider
+            description: Provider label for the LLM target.
+            tests: [not_null]
+          - name: platform
+            description: Platform or engine for the target.
+            tests: [not_null]
+          - name: model_name
+            description: Model name used for the target.
+            tests: [not_null]
+          - name: active
+            description: Whether the target is active.
+            tests: [not_null]
+          - name: recorded_at
+            description: UTC timestamp of target registration.
+            tests: [not_null]
+
+      - name: comparison_registry
+        description: Comparison matrix linking queries to prompt definitions for Brave/LLM evaluation runs.
+        loaded_at_field: recorded_at
+        columns:
+          - name: comparison_id
+            description: Stable comparison identifier.
+            tests: [unique, not_null]
+          - name: query_id
+            description: Parent canonical query identifier.
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('bronze', 'query_registry')
+                    field: query_id
+          - name: prompt_id
+            description: Parent LLM prompt identifier.
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('bronze', 'llm_prompt_registry')
+                    field: prompt_id
+          - name: active
+            description: Whether the comparison record is active.
+            tests: [not_null]
+          - name: recorded_at
+            description: UTC timestamp of comparison registration.
+            tests: [not_null]
+
+      - name: brand_registry
+        description: Canonical brand registry used for downstream alias/domain mapping.
+        loaded_at_field: recorded_at
+        columns:
+          - name: brand_id
+            description: Stable canonical brand identifier.
+            tests: [unique, not_null]
+          - name: canonical_name
+            description: Canonical brand name.
+            tests: [not_null]
+          - name: active
+            description: Whether the brand is active.
+            tests: [not_null]
+          - name: recorded_at
+            description: UTC timestamp of brand registry update.
+            tests: [not_null]
+
+      - name: brand_alias_registry
+        description: Approved brand aliases retained as Bronze metadata.
+        loaded_at_field: recorded_at
+        columns:
+          - name: brand_alias_id
+            description: Stable alias record identifier.
+            tests: [unique, not_null]
+          - name: brand_id
+            description: Parent brand identifier.
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('bronze', 'brand_registry')
+                    field: brand_id
+
+      - name: brand_domain_registry
+        description: Approved brand domains retained as Bronze metadata.
+        loaded_at_field: recorded_at
+        columns:
+          - name: brand_domain_id
+            description: Stable domain record identifier.
+            tests: [unique, not_null]
+          - name: brand_id
+            description: Parent brand identifier.
+            tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('bronze', 'brand_registry')
+                    field: brand_id

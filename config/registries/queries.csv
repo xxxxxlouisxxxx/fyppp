@@ -1,0 +1,69 @@
+query_id,keyword,language,market,active
+query-001,best comfortable sneakers for walking,en,US,TRUE
+query-002,most comfortable sneakers for all-day wear,en,US,TRUE
+query-003,best sneakers for travel,en,US,TRUE
+query-004,best sneakers for wide feet,en,US,TRUE
+query-005,best wide toe-box lifestyle sneakers,en,US,TRUE
+query-006,best sneaker deals below retail,en,US,TRUE
+query-007,best comfortable and stylish sneakers for cost-effectiveness,en,US,TRUE
+query-008,most counterfeited sneaker brands,en,US,TRUE
+query-009,safest places to buy sneakers from resellers,en,US,TRUE
+query-010,best comfortable and stylish summer sneakers,en,US,TRUE
+query-011,sneakers that can be dressed up,en,US,TRUE
+query-012,best low-profile sneakers for comfort,en,US,TRUE
+query-013,durable sneaker brands that last for years,en,US,TRUE
+query-014,sneaker soles that crumble in storage,en,US,TRUE
+query-015,sneaker brands and models that can be resoled,en,US,TRUE
+query-016,sneaker brands with the biggest resale price decline,en,US,TRUE
+query-017,sneaker brands with declining hype,en,US,TRUE
+query-018,最舒適的步行運動鞋推薦,zh-TW,HK,TRUE
+query-019,全天穿著最舒適的運動鞋,zh-TW,HK,TRUE
+query-020,最適合旅行的運動鞋,zh-TW,HK,TRUE
+query-021,寬腳最適合的運動鞋,zh-TW,HK,TRUE
+query-022,寬楦頭休閒運動鞋推薦,zh-TW,HK,TRUE
+query-023,低於原價的正品球鞋優惠,zh-TW,HK,TRUE
+query-024,性價比最高的舒適時尚運動鞋,zh-TW,HK,TRUE
+query-025,最常被仿冒的球鞋品牌,zh-TW,HK,TRUE
+query-026,最安全的二手球鞋購買平台,zh-TW,HK,TRUE
+query-027,夏天舒適又好看的運動鞋,zh-TW,HK,TRUE
+query-028,可搭正裝的運動鞋,zh-TW,HK,TRUE
+query-029,低調外型但舒適的運動鞋,zh-TW,HK,TRUE
+query-030,耐穿又耐用的球鞋品牌,zh-TW,HK,TRUE
+query-031,久放會出現鞋底粉化的球鞋,zh-TW,HK,TRUE
+query-032,可重貼鞋底或維修的球鞋品牌,zh-TW,HK,TRUE
+query-033,近 12 個月轉售價格跌幅最大的球鞋品牌,zh-TW,HK,TRUE
+query-034,近 12 個月熱度下滑最大的球鞋品牌,zh-TW,HK,TRUE
+query-035,最舒服的步行运动鞋推荐,zh-CN,CN,TRUE
+query-036,全天穿着最舒适的运动鞋,zh-CN,CN,TRUE
+query-037,最适合旅行的运动鞋,zh-CN,CN,TRUE
+query-038,宽脚最适合的运动鞋,zh-CN,CN,TRUE
+query-039,宽楦头休闲运动鞋推荐,zh-CN,CN,TRUE
+query-040,低于原价的正品球鞋优惠,zh-CN,CN,TRUE
+query-041,兼顾舒适、时尚与高性价比的运动鞋,zh-CN,CN,TRUE
+query-042,最常被仿冒的球鞋品牌,zh-CN,CN,TRUE
+query-043,最安全的二手球鞋购买平台,zh-CN,CN,TRUE
+query-044,夏天舒适又好看的运动鞋,zh-CN,CN,TRUE
+query-045,可搭正装的运动鞋/休闲鞋,zh-CN,CN,TRUE
+query-046,低调外型但舒适的运动鞋,zh-CN,CN,TRUE
+query-047,耐穿又耐用的球鞋品牌,zh-CN,CN,TRUE
+query-048,久放会出现鞋底粉化的球鞋,zh-CN,CN,TRUE
+query-049,可重贴鞋底或维修的球鞋品牌,zh-CN,CN,TRUE
+query-050,近 12 个月转售价跌幅最大的球鞋品牌,zh-CN,CN,TRUE
+query-051,近 12 个月热度下滑最大的球鞋品牌,zh-CN,CN,TRUE
+query-052,Sneaker paling nyaman untuk berjalan kaki,id,ID,TRUE
+query-053,Sneaker paling nyaman untuk dipakai seharian,id,ID,TRUE
+query-054,Sneaker terbaik untuk bepergian,id,ID,TRUE
+query-055,Sneaker terbaik untuk kaki lebar,id,ID,TRUE
+query-056,Sneaker gaya hidup terbaik dengan ruang jari kaki lebar,id,ID,TRUE
+query-057,Penawaran sneaker terbaik dengan harga di bawah harga ritel,id,ID,TRUE
+query-058,Sneaker nyaman dan bergaya dengan nilai terbaik (hemat biaya),id,ID,TRUE
+query-059,Merek sneaker yang paling banyak dipalsukan,id,ID,TRUE
+query-060,Tempat paling aman untuk membeli sneaker dari penjual pihak ketiga (reseller),id,ID,TRUE
+query-061,Sneaker musim panas yang nyaman dan bergaya,id,ID,TRUE
+query-062,Sneaker yang cocok dipadukan dengan gaya formal maupun kasual,id,ID,TRUE
+query-063,Sneaker berprofil rendah (low-profile) yang paling nyaman,id,ID,TRUE
+query-064,Merek sneaker awet yang tahan bertahun-tahun,id,ID,TRUE
+query-065,Sol sneaker yang mudah hancur saat disimpan,id,ID,TRUE
+query-066,Merek dan model sneaker yang solnya bisa diganti,id,ID,TRUE
+query-067,Merek sneaker dengan penurunan harga jual kembali terbesar,id,ID,TRUE
+query-068,Merek sneaker yang popularitasnya sedang menurun,id,ID,TRUE

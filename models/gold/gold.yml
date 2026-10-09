@@ -1,0 +1,256 @@
+version: 2
+
+models:
+  - name: gold_brand_organic_hits
+    description: Brand-domain matches on fixture-proven organic SERP results. Matching uses approved brand domains only.
+    columns:
+      - name: organic_result_id
+        description: Parent organic result identifier.
+        tests: [not_null]
+      - name: observation_id
+        description: Parent SERP observation identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_search_observations')
+                field: observation_id
+      - name: brand_id
+        description: Matched brand identifier from the domain registry.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_reference__brands')
+                field: brand_id
+      - name: normalized_domain
+        description: Lowercased domain used for brand matching.
+        tests: [not_null]
+
+  - name: gold_serp_brand_visibility
+    description: Versioned SERP organic share-of-voice by observation and brand. Missing hits are zero numerators, not brand absence.
+    columns:
+      - name: metric_id
+        description: Deterministic metric identifier.
+        tests: [unique, not_null]
+      - name: observation_id
+        description: Parent SERP observation identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_search_observations')
+                field: observation_id
+      - name: query_id
+        description: SERP query identifier.
+        tests: [not_null]
+      - name: brand_id
+        description: Brand identifier in the metric grain.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_reference__brands')
+                field: brand_id
+      - name: metric_name
+        description: Metric name.
+        tests: [not_null]
+      - name: metric_version
+        description: Metric version retained with the value.
+        tests: [not_null]
+      - name: numerator
+        description: Count of organic results matching the brand domain.
+        tests: [not_null]
+      - name: denominator
+        description: Count of organic results in the observation.
+        tests: [not_null]
+      - name: availability_status
+        description: Evidence availability, never inferred as brand absence.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - available
+                  - not_collected
+                  - pending
+                  - unsupported
+                  - provider_error
+                  - parser_quarantined
+                  - no_results
+                  - not_applicable
+                  - quarantined
+      - name: collection_status
+        description: Parser/collection outcome retained separately from availability.
+        tests: [not_null]
+
+  - name: gold_llm_brand_visibility
+    description: Versioned LLM brand-mention metrics from flattened observations. No guessed item parsers.
+    columns:
+      - name: metric_id
+        description: Deterministic metric identifier.
+        tests: [unique, not_null]
+      - name: observation_id
+        description: Parent LLM observation identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_llm_observations')
+                field: observation_id
+      - name: brand_id
+        description: Brand identifier in the metric grain.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_reference__brands')
+                field: brand_id
+      - name: metric_name
+        description: Metric name.
+        tests: [not_null]
+      - name: metric_version
+        description: Metric version retained with the value.
+        tests: [not_null]
+      - name: numerator
+        description: Alias mention count retained as the metric numerator.
+        tests: [not_null]
+      - name: denominator
+        description: Observation item count used as the metric denominator.
+        tests: [not_null]
+      - name: availability_status
+        description: Evidence availability, never inferred as brand absence.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - available
+                  - not_collected
+                  - pending
+                  - unsupported
+                  - provider_error
+                  - parser_quarantined
+                  - no_results
+                  - not_applicable
+                  - quarantined
+      - name: collection_status
+        description: Flatten/collection outcome retained separately from availability.
+        tests: [not_null]
+
+  - name: gold_comparison_brand_metrics
+    description: Version 2 exploratory binary presence gap for approved query-prompt mappings, partitioned by requested locale, source slice and explicit collection window. Unmapped or incompatible evidence is not compared.
+    columns:
+      - name: metric_id
+        description: Deterministic comparison metric identifier.
+        tests: [unique, not_null]
+      - name: comparison_id
+        description: Approved comparison registry identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_reference__comparisons')
+                field: comparison_id
+      - name: query_id
+        description: SERP query identity from the comparison registry.
+        tests: [not_null]
+      - name: prompt_id
+        description: LLM prompt identity from the comparison registry.
+        tests: [not_null]
+      - name: brand_id
+        description: Brand identifier in the comparison grain.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_reference__brands')
+                field: brand_id
+      - name: metric_name
+        description: Comparison metric name.
+        tests: [not_null]
+      - name: metric_version
+        description: Comparison metric version.
+        tests: [not_null]
+      - name: comparison_eligibility
+        description: Context matching only; not a claim of provider-applied personalization or commercial opportunity.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [matched_context, unmatched_context, missing_context, not_collected]
+      - name: language_code
+        description: Lowercase hyphenated requested language; null is unknown.
+      - name: location_code
+        description: Exact provider location code; city and country codes are not equated.
+      - name: collection_window
+        description: Explicit shared window identifier. Different identifiers are never inferred equivalent.
+      - name: availability_status
+        description: Combined availability. Missing SERP or LLM evidence is not_collected, not brand absence.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - available
+                  - not_collected
+                  - pending
+                  - unsupported
+                  - provider_error
+                  - parser_quarantined
+                  - no_results
+                  - not_applicable
+                  - quarantined
+
+  - name: gold_comparison_kpi_summary
+    description: Exploratory binary presence descriptors for one approved source-context pair; not traffic, ROI, Top10 or validated business-opportunity scores.
+    columns:
+      - name: kpi_id
+        description: Deterministic KPI identifier per source comparison metric and context slice.
+        tests: [unique, not_null]
+      - name: source_metric_id
+        description: Parent metric identifier from gold_comparison_brand_metrics.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('gold_comparison_brand_metrics')
+                field: metric_id
+      - name: comparison_id
+        description: Approved comparison registry identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_reference__comparisons')
+                field: comparison_id
+      - name: brand_id
+        description: Brand identifier in KPI grain.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_reference__brands')
+                field: brand_id
+      - name: kpi_name
+        description: KPI name.
+        tests: [not_null]
+      - name: kpi_version
+        description: KPI version.
+        tests: [not_null]
+      - name: availability_status
+        description: Availability propagated from the comparison metric.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - available
+                  - not_collected
+                  - pending
+                  - unsupported
+                  - provider_error
+                  - parser_quarantined
+                  - no_results
+                  - not_applicable
+                  - quarantined

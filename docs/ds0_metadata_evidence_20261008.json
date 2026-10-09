@@ -1,0 +1,50 @@
+{
+  "audit_date": "2026-10-08",
+  "evidence_type": "direct_read_only_duckdb_metadata_inventory",
+  "connection_read_only": true,
+  "provider_calls": 0,
+  "production_writes": 0,
+  "tests_executed": false,
+  "full_raw_integrity_verified": false,
+  "response_based_assignment_coverage_verified": false,
+  "collection_window": "2026-10",
+  "configured_assignment_count": 4896,
+  "configured_scope_approval": "unresolved",
+  "assignment_key_coverage_not_confirmed_submission_or_retrieval": {
+    "has_local_request": 4556,
+    "no_local_request": 340,
+    "missing_source": "Bing",
+    "missing_language": "id",
+    "missing_locations_each_68_assignments": ["2156", "2344", "2360", "2702", "2840"]
+  },
+  "request_status_counts_not_observation_counts": [
+    {"source": "serp", "platform": "google", "status": "completed", "rows": 2719},
+    {"source": "serp", "platform": "Bing", "status": "completed", "rows": 2040},
+    {"source": "serp", "platform": "Yahoo", "status": "completed", "rows": 2720},
+    {"source": "serp", "platform": "Baidu", "status": "completed", "rows": 272},
+    {"source": "llm", "platform": "chat_gpt", "status": "completed", "rows": 680},
+    {"source": "llm", "platform": "gemini", "status": "completed", "rows": 680}
+  ],
+  "pending_standard_serp_selector_rows": 0,
+  "hash_verification_scope": "before_and_after_completed_metadata_inventory_only",
+  "warehouses": [
+    {"name": "elt_run_20261002.duckdb", "sha256": "9a7b5e9a20ce933d585c29c24f22b6749d950654a5dfff2ed4bcaace3b0de51a", "before_equals_after": true},
+    {"name": "elt_sample_20261002.duckdb", "sha256": "65b6d1e4901727737935d5d740dbcc9ecf40c48e6adf7fee22f5626309e2d4a7", "before_equals_after": true},
+    {"name": "geo_research.duckdb", "sha256": "867ea440e6a051109f56fa5f4ccf65b849c6478818ecb090d7a250f34aa12e5d", "before_equals_after": true, "request_rows": 9112, "response_metadata_rows": 9112, "raw_index_rows": 31695, "search_observations": 0, "llm_observations": 0, "v2_results": 0, "release_rows": 0},
+    {"name": "phase_a_staging.duckdb", "sha256": "1bf1ad6b19797fef8c9406c31431913a0df8f71034a2c0cf6ea33b93b663f53a", "before_equals_after": true},
+    {"name": "phase_b_silver.duckdb", "sha256": "0823e1079308e0e8c00784bb8fd6298f448e76280ce5fb485daec18b9a109b35", "before_equals_after": true},
+    {"name": "phase_c_gold.duckdb", "sha256": "ec946f42d10c1cf011806a68460ed8e72d5291160c271ccc6a1d4333da0e8c0c", "before_equals_after": true},
+    {"name": "phase_d_presentation.duckdb", "sha256": "b1fee758fa99ab71a4c78a54d9a430042d6954f1de5b093fd5d72dfb3f51c1a6", "before_equals_after": true, "search_observations": 2501, "llm_observations": 1, "quarantine_rows_not_unique_observations": 1953, "completed_release": "phase-d-001", "release_metric_version": "1.0.0", "snapshot_rows_each_channel_and_comparison": 1},
+    {"name": "raw_date_20260928_20261002T092048_363116Z.duckdb", "sha256": "602ad964e49580e18392e90eec7b425d59ab871828b89b3fa998b54d17fb657a", "before_equals_after": true},
+    {"name": "raw_date_20260928_20261002T102632_663523Z.duckdb", "sha256": "de25e0a70e85821d46c47b4efcd267d85c5b40e9b33d518beb9ae546bb98b760", "before_equals_after": true},
+    {"name": "raw_date_20260928_20261002T123005_145229Z.duckdb", "sha256": "1b4cf9063a2952747b5ad27d48a32127b70aad46feac7df23ad395c2f50e0ed5", "before_equals_after": true, "search_observations": 2745, "llm_observations": 682, "v2_results": 3427, "quarantine_rows_not_unique_observations": 4913, "release_rows": 0},
+    {"name": "raw_full_20261002T083720_354525Z.duckdb", "sha256": "6dabd491d4ad242d170b1347776322096099b66881fd316a52687bd0115fa4bc", "before_equals_after": true, "search_observations": 6053, "llm_observations": 683, "release_rows": 0}
+  ],
+  "limitations": [
+    "Metadata counts are not response-based successful or usable observations.",
+    "All eleven inventory database before/after hashes matched and are transcribed here.",
+    "No approved extraction benchmark, real-data two-batch acceptance or backup restore pass.",
+    "Full raw scan did not return usable output and is not claimed passed.",
+    "Audit interpreter is Python 3.14.4; declared supported Python 3.12 testing remains unverified."
+  ]
+}

@@ -1,0 +1,4 @@
+brand_id,canonical_name,ownership_type,market,language,effective_start_date,effective_end_date,active
+brand-001,Example Brand,TO_BE_VERIFIED,US,en,2026-01-01,,false
+brand-002,範例品牌,TO_BE_VERIFIED,HK,zh,2026-01-01,,true
+brand-003,示例品牌,TO_BE_VERIFIED,CN,zh,2026-01-01,,true

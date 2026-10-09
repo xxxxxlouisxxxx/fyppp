@@ -1,0 +1,1 @@
+"""Read-only completed-release dashboard; independent of ingestion/storage writers."""

@@ -1,0 +1,1 @@
+select * from {{ source('silver', 'silver_item_category_evidence') }}

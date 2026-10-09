@@ -1,0 +1,43 @@
+version: 2
+
+sources:
+  - name: presentation
+    description: Python-written completed-release snapshots. dbt wraps the current completed release only.
+    schema: presentation
+    tables:
+      - name: releases
+        description: Release catalog with completeness payload and completed/incomplete status.
+        columns:
+          - name: release_id
+            description: Stable release identifier.
+            tests: [unique, not_null]
+          - name: status
+            description: Release lifecycle status.
+            tests: [not_null]
+      - name: release_current
+        description: Single current-release pointer. Only a completed release may be current.
+        columns:
+          - name: slot
+            description: Pointer slot name.
+            tests: [unique, not_null]
+          - name: release_id
+            description: Current release identifier.
+            tests: [not_null]
+      - name: release_serp_brand_visibility
+        description: Frozen SERP brand-visibility metrics for one release.
+        columns:
+          - name: metric_id
+            description: Metric identifier within the release.
+            tests: [not_null]
+      - name: release_llm_brand_visibility
+        description: Frozen LLM brand-visibility metrics for one release.
+        columns:
+          - name: metric_id
+            description: Metric identifier within the release.
+            tests: [not_null]
+      - name: release_comparison_brand_metrics
+        description: Frozen comparison brand metrics for one release.
+        columns:
+          - name: metric_id
+            description: Metric identifier within the release.
+            tests: [not_null]

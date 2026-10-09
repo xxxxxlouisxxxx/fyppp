@@ -1,0 +1,1 @@
+select * from {{ ref('silver_readable_items_v2') }} where item_kind = 'product'

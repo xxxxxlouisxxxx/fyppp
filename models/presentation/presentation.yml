@@ -1,0 +1,134 @@
+version: 2
+
+models:
+  - name: presentation_serp_brand_visibility
+    description: Current completed-release SERP brand visibility. Rename/cast only; no Gold or Silver reads.
+    columns:
+      - name: metric_id
+        description: Frozen metric identifier from the completed release.
+        tests: [unique, not_null]
+      - name: release_id
+        description: Completed current release identifier.
+        tests: [not_null]
+      - name: brand_id
+        description: Brand identifier in the metric grain.
+        tests: [not_null]
+      - name: metric_name
+        description: Metric name retained from the Gold snapshot.
+        tests: [not_null]
+      - name: metric_version
+        description: Metric version retained from the Gold snapshot.
+        tests: [not_null]
+      - name: numerator
+        description: Organic brand-hit count.
+        tests: [not_null]
+      - name: denominator
+        description: Organic result count.
+        tests: [not_null]
+      - name: availability_status
+        description: Evidence availability, never inferred as brand absence.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - available
+                  - not_collected
+                  - pending
+                  - unsupported
+                  - provider_error
+                  - parser_quarantined
+                  - no_results
+                  - not_applicable
+                  - quarantined
+      - name: collection_status
+        description: Collection/parser outcome retained separately from availability.
+        tests: [not_null]
+
+  - name: presentation_llm_brand_visibility
+    description: Current completed-release LLM brand visibility. Rename/cast only; no guessed parsers.
+    columns:
+      - name: metric_id
+        description: Frozen metric identifier from the completed release.
+        tests: [unique, not_null]
+      - name: release_id
+        description: Completed current release identifier.
+        tests: [not_null]
+      - name: brand_id
+        description: Brand identifier in the metric grain.
+        tests: [not_null]
+      - name: metric_name
+        description: Metric name retained from the Gold snapshot.
+        tests: [not_null]
+      - name: metric_version
+        description: Metric version retained from the Gold snapshot.
+        tests: [not_null]
+      - name: numerator
+        description: Alias mention count.
+        tests: [not_null]
+      - name: denominator
+        description: Observation item count used as the metric denominator.
+        tests: [not_null]
+      - name: availability_status
+        description: Evidence availability, never inferred as brand absence.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - available
+                  - not_collected
+                  - pending
+                  - unsupported
+                  - provider_error
+                  - parser_quarantined
+                  - no_results
+                  - not_applicable
+                  - quarantined
+      - name: collection_status
+        description: Flatten/collection outcome retained separately from availability.
+        tests: [not_null]
+
+  - name: presentation_comparison_brand_metrics
+    description: Current completed-release comparison metrics authorized only by the comparison registry snapshot.
+    columns:
+      - name: metric_id
+        description: Frozen comparison metric identifier.
+        tests: [unique, not_null]
+      - name: release_id
+        description: Completed current release identifier.
+        tests: [not_null]
+      - name: comparison_id
+        description: Comparison registry identifier frozen in the release.
+        tests: [not_null]
+      - name: query_id
+        description: SERP query identity from the comparison snapshot.
+        tests: [not_null]
+      - name: prompt_id
+        description: LLM prompt identity from the comparison snapshot.
+        tests: [not_null]
+      - name: brand_id
+        description: Brand identifier in the comparison grain.
+        tests: [not_null]
+      - name: metric_name
+        description: Comparison metric name.
+        tests: [not_null]
+      - name: metric_version
+        description: Comparison metric version.
+        tests: [not_null]
+      - name: availability_status
+        description: Combined availability. Missing SERP or LLM evidence is not_collected, not brand absence.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - available
+                  - not_collected
+                  - pending
+                  - unsupported
+                  - provider_error
+                  - parser_quarantined
+                  - no_results
+                  - not_applicable
+                  - quarantined

@@ -1,0 +1,197 @@
+version: 2
+
+models:
+  - name: silver_search_observations
+    description: dbt wrap of Python-written SERP observations. Rename/cast only; no JSON parsing.
+    columns:
+      - name: observation_id
+        description: Deterministic observation identifier.
+        tests: [unique, not_null]
+      - name: query_id
+        description: Query identifier retained from Bronze or request fallback.
+        tests: [not_null]
+      - name: search_engine
+        description: Parsed search engine.
+        tests: [not_null]
+      - name: has_results
+        description: Whether the parsed payload contained result items.
+        tests: [not_null]
+      - name: outcome_status
+        description: Parser outcome, such as available or no_results.
+        tests: [not_null]
+      - name: response_id
+        description: Source response identifier.
+        tests: [not_null]
+      - name: raw_file_hash
+        description: SHA-256 of the raw response file.
+        tests: [not_null]
+
+  - name: silver_serp_items
+    description: dbt wrap of Python-written top-level SERP items.
+    columns:
+      - name: serp_item_id
+        description: Deterministic SERP item identifier.
+        tests: [unique, not_null]
+      - name: observation_id
+        description: Parent observation identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_search_observations')
+                field: observation_id
+      - name: normalized_item_type
+        description: Normalized item class retained by the parser.
+        tests: [not_null]
+      - name: raw_item_json
+        description: Preserved raw item JSON.
+        tests: [not_null]
+
+  - name: silver_serp_parsing_quarantine
+    description: dbt wrap of retained unsafe or unknown SERP elements.
+    columns:
+      - name: quarantine_id
+        description: Deterministic quarantine identifier.
+        tests: [unique, not_null]
+      - name: observation_id
+        description: Parent observation identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_search_observations')
+                field: observation_id
+      - name: reason
+        description: Quarantine reason code.
+        tests: [not_null]
+
+  - name: silver_organic_results
+    description: dbt wrap of fixture-proven organic feature rows.
+    columns:
+      - name: organic_result_id
+        description: Deterministic organic result identifier.
+        tests: [unique, not_null]
+      - name: observation_id
+        description: Parent observation identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_search_observations')
+                field: observation_id
+      - name: parent_serp_item_id
+        description: Parent SERP item identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_serp_items')
+                field: serp_item_id
+      - name: raw_evidence
+        description: Preserved raw item JSON used as organic evidence.
+        tests: [not_null]
+
+  - name: silver_llm_observations
+    description: dbt wrap of flattened LLM observations. No guessed item schema.
+    columns:
+      - name: observation_id
+        description: Deterministic LLM observation identifier.
+        tests: [unique, not_null]
+      - name: request_id
+        description: Source Bronze request identifier.
+        tests: [not_null]
+      - name: response_id
+        description: Source Bronze response identifier.
+        tests: [not_null]
+      - name: items_json
+        description: Flattened LLM items JSON retained as evidence.
+        tests: [not_null]
+      - name: citations_json
+        description: Flattened citation JSON retained as evidence.
+        tests: [not_null]
+      - name: raw_file_hash
+        description: SHA-256 of the raw LLM response file.
+        tests: [not_null]
+      - name: outcome_status
+        description: Flatten outcome, such as available, no_results, or quarantined.
+        tests: [not_null]
+
+  - name: silver_serp_kpi_measures
+    description: KPI-ready SERP observation measures built from silver parser outputs.
+    columns:
+      - name: measure_id
+        description: Deterministic KPI measure identifier.
+        tests: [unique, not_null]
+      - name: observation_id
+        description: Parent SERP observation identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_search_observations')
+                field: observation_id
+      - name: kpi_name
+        description: KPI name at silver layer.
+        tests: [not_null]
+      - name: kpi_version
+        description: KPI version.
+        tests: [not_null]
+      - name: availability_status
+        description: Availability derived from collection/parsing outcomes.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - available
+                  - not_collected
+                  - pending
+                  - unsupported
+                  - provider_error
+                  - parser_quarantined
+                  - no_results
+                  - not_applicable
+                  - quarantined
+      - name: collection_status
+        description: Raw parser or provider outcome retained for diagnostics.
+        tests: [not_null]
+
+  - name: silver_llm_kpi_measures
+    description: KPI-ready LLM observation measures built from flattened silver evidence.
+    columns:
+      - name: measure_id
+        description: Deterministic KPI measure identifier.
+        tests: [unique, not_null]
+      - name: observation_id
+        description: Parent LLM observation identifier.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('silver_llm_observations')
+                field: observation_id
+      - name: kpi_name
+        description: KPI name at silver layer.
+        tests: [not_null]
+      - name: kpi_version
+        description: KPI version.
+        tests: [not_null]
+      - name: availability_status
+        description: Availability derived from flatten outcomes.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - available
+                  - not_collected
+                  - pending
+                  - unsupported
+                  - provider_error
+                  - parser_quarantined
+                  - no_results
+                  - not_applicable
+                  - quarantined
+      - name: collection_status
+        description: Flatten or provider outcome retained for diagnostics.
+        tests: [not_null]

@@ -1,0 +1,4 @@
+brand_alias_id,brand_id,alias_text,market,language,effective_start_date,effective_end_date
+brand-alias-001,brand-001,Example Brand,US,en,2026-01-01,
+brand-alias-002,brand-002,範例鞋履,HK,zh,2026-01-01,
+brand-alias-003,brand-003,示例鞋履,CN,zh,2026-01-01,

@@ -1,0 +1,4 @@
+brand_domain_id,brand_id,domain,market,language,effective_start_date,effective_end_date
+brand-domain-001,brand-001,example.test,US,en,2026-01-01,
+brand-domain-002,brand-002,example.hk,HK,zh,2026-01-01,
+brand-domain-003,brand-003,example.cn,CN,zh,2026-01-01,
